@@ -15,8 +15,7 @@ class Food:
     def __init__(self, name, category, unit, quantity_needed_in_stock=2):
         self._name = name
         self._category = category
-        self._quantity = quantity
-        self._quantity_needed = quantity_needed
+        self._quantity_needed_in_stock = quantity_needed_in_stock
         self._unit = unit
 
     @property
@@ -29,26 +28,31 @@ class Food:
         self._name = name
 
     @property
-    def quantity(self):
-        return self._quantity
+    def category(self):
+        return self._category
 
-    @quantity.setter
-    def quantity(self, quantity):
-        """change the quantity of food available"""
-        self._quantity = quantity
+    @category.setter
+    def category(self, category):
+        """change the food category"""
+        self._category = category
 
     @property
-    def quantity_needed(self):
-        return self._quantity_needed
+    def unit(self):
+        return self._unit
 
-    @quantity_needed.setter
-    def quantity_needed(self, quantity_needed):
+    @unit.setter
+    def unit(self, unit):
+        """change the food measuring unit"""
+        self._unit = unit
+
+    @property
+    def quantity_needed_in_stock(self):
+        return self._quantity_needed_in_stock
+
+    @quantity_needed_in_stock.setter
+    def quantity_needed_in_stock(self, quantity_needed_in_stock):
         """change the shopping priority"""
-        self._quantity_needed = quantity_needed
-
-    def need(self):
-        return self._quantity < self._quantity_needed
-
+        self._quantity_needed_in_stock = quantity_needed_in_stock
 
 class Recipie:
     """
@@ -60,7 +64,7 @@ class Recipie:
     def __init__(self, name, serving_number):
         self._name = name
         self._serving_number = serving_number
-        self._ingredients = dict()
+        self.ingredients = dict()
 
     @property
     def name(self):
@@ -80,10 +84,14 @@ class Recipie:
     def serving_number(self, number):
         self._serving_number = number
 
-    def add_ingredient(self, ingredient, quantity):
-        if ingredient in self._ingredients:
+    def add_ingredient(self, ingredient, quantity_needed):
+        if ingredient in self.ingredients:
             return "Ingredient already present"
-        self._ingredients[ingredient] = quantity
+        self.ingredients[ingredient] = quantity_needed
+
+    def ingredient_quantity_needed(self, ingredient):
+        return self.ingredients[ingredient]
+
 
     #TODO: check availability
 
@@ -95,11 +103,44 @@ class Kitchen:
     """
 
     def __init__(self):
-        self._recipies = list()  # list of recipies
-        self._pantry = dict()  # dict of food and quantity
-        self._shopping_list = list()  # list of food to buy
+        self.recipies = list()  # list of recipies
+        self.pantry = dict()  # dict of food and quantity
+        self.shopping_list = list()  # list of food to buy
 
     @property
     def recipie_count(self):
         """get the number of recipies"""
-        return len(self._recipies)
+        return len(self.recipies)
+
+    def add_to_pantry(self, Food, quantity):
+        if Food not in self.pantry:
+            self.pantry[Food] = quantity
+        else:
+            self.pantry[Food] += quantity
+
+    def add_recipie(self, recipie):
+        self.recipies.append(recipie)
+
+    def can_cook(self, recipie):
+        for ingredient in recipie.ingredients:
+            if self.pantry[ingredient] < recipie.ingredients[ingredient]:
+                return False
+        return True
+
+    def get_cookable_recipies(self):
+        cookable_recipies = []
+
+        for recipie in self.recipies:
+            if self.can_cook(recipie):
+                cookable_recipies.append(recipie)
+        return cookable_recipies
+
+    def make_shopping_list(self):
+        '''create a shopping list based on quantity_needed_in_stock'''
+        self.shopping_list = []
+
+        for food in self.pantry:
+            if self.pantry[food] < food.quantity_needed_in_stock:
+                self.shopping_list.append(food)
+        return self.shopping_list
+
