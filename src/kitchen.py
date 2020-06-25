@@ -78,12 +78,12 @@ class Recipie:
 
     @serving_number.setter
     def serving_number(self, number):
-        self.serving_number = number
+        self._serving_number = number
 
     def add_ingredient(self, ingredient, quantity):
-        if ingredient in self.ingredients:
+        if ingredient in self._ingredients:
             return "Ingredient already present"
-        self.ingredients[ingredient] = quantity
+        self._ingredients[ingredient] = quantity
 
     #TODO: check availability
 
