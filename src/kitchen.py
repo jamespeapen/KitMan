@@ -9,10 +9,10 @@ Food, Recipie, Grocery List, Pantry
 class Food:
     """
     The food class represents a food item with a
-    name, quatity, and shopping priority
+    name, a measuring unit and quantity needed
     """
 
-    def __init__(self, name, category, unit, quantity=0, quantity_needed=1):
+    def __init__(self, name, category, unit, quantity_needed_in_stock=2):
         self._name = name
         self._category = category
         self._quantity = quantity
