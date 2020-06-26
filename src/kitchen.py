@@ -93,8 +93,6 @@ class Recipie:
         return self.ingredients[ingredient]
 
 
-    #TODO: check availability
-
 
 class Kitchen:
     """
@@ -121,9 +119,23 @@ class Kitchen:
     def add_recipie(self, recipie):
         self.recipies.append(recipie)
 
+    def what_do_i_need_to_cook(self, recipie):
+        food_needed={}
+
+        for ingredient in recipie.ingredients:
+            if ingredient not in self.pantry:
+                food_needed[ingredient] = recipie.ingredients[ingredient]
+
+            elif recipie.ingredients[ingredient] > self.pantry[ingredient]:
+                food_needed[ingredient] = recipie.ingredients[ingredient] - self.pantry[ingredient]
+
+        return food_needed
+
     def can_cook(self, recipie):
         for ingredient in recipie.ingredients:
-            if self.pantry[ingredient] < recipie.ingredients[ingredient]:
+            if ingredient not in self.pantry:
+                return False
+            elif self.pantry[ingredient] < recipie.ingredients[ingredient]:
                 return False
         return True
 
