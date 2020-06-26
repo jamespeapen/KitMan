@@ -76,7 +76,7 @@ class TestKitchen:
         kitchen1.add_recipie(recipie3)
 
         recipie4 = Recipie('recipie4', serving_number=3)
-        recipie4.add_ingredient(food5, quantity_needed=5)   # available: 4 - test can't cook
+        recipie4.add_ingredient(food5, quantity_needed=6)   # available: 4 - test can't cook
         kitchen1.add_recipie(recipie4)
 
         assert kitchen1.can_cook(recipie3)
@@ -93,3 +93,14 @@ class TestKitchen:
 
         assert not kitchen1.can_cook(recipie5)
 
+        # what_do_i_need_to_cook: unavailable
+        food_needed = kitchen1.what_do_i_need_to_cook(recipie5)
+        assert len(food_needed) == 1
+        assert no_food in food_needed
+        assert food_needed[no_food] == 3        # because we don't have it
+
+        # what_do_i_need_to_cook: not enough
+        food_needed = kitchen1.what_do_i_need_to_cook(recipie4)
+        assert len(food_needed) == 1
+        assert food5 in food_needed
+        assert food_needed[food5] == 2          # because we only have 4
