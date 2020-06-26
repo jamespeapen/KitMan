@@ -86,3 +86,10 @@ class TestKitchen:
         assert len(kitchen1.get_cookable_recipies()) == 1     # recipie3
         assert kitchen1.get_cookable_recipies()[0].name == 'recipie3'
 
+        # recipie with unavailable ingredient
+        no_food = Food('nope', 'unavailable', 'none')
+        recipie5 = Recipie('recipie5', serving_number=1)
+        recipie5.add_ingredient(no_food, quantity_needed=3)
+
+        assert not kitchen1.can_cook(recipie5)
+
