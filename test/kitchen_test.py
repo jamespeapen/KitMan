@@ -54,53 +54,60 @@ class TestKitchen:
         assert len(kitchen1.pantry) == 0
 
         # add food to pantry
-        food3 = Food('food3', 'category3', 'unit3')     # default needed: 2, test needed 
-        food4 = Food('food4', 'category4', 'unit4', quantity_needed_in_stock=4)     # test not needed 
-        food5 = Food('food5', 'category5', 'unit5', quantity_needed_in_stock=10)    #test needed 
+        food1 = Food('food1', 'category1', 'unit1')     # default needed: 2, test needed 
+        food2 = Food('food2', 'category2', 'unit2', quantity_needed_in_stock=4)     # test not needed 
+        food3 = Food('food3', 'category3', 'unit3', quantity_needed_in_stock=10)    #test needed 
 
-        kitchen1.add_to_pantry(food3, quantity=1)    # test needed 
-        kitchen1.add_to_pantry(food4, quantity=7)    # test not needed 
-        kitchen1.add_to_pantry(food5, quantity=4)    # test needed 
+        kitchen1.add_to_pantry(food1, quantity=1)    # test needed 
+        kitchen1.add_to_pantry(food2, quantity=7)    # test not needed 
+        kitchen1.add_to_pantry(food3, quantity=4)    # test needed 
+
         assert len(kitchen1.pantry) == 3
 
         kitchen1.make_shopping_list()
         assert len(kitchen1.shopping_list) == 2    # food3, food5
 
         # add recipies
-        recipie2 = Recipie('recipie2', serving_number=10)
-        recipie2.add_ingredient(food3, quantity_needed=4)   # available: 2 - test can't cook
+        recipie1 = Recipie('recipie1', serving_number=10)
+        recipie1.add_ingredient(food1, quantity_needed=4)   # available: 1 - test can't cook
+        recipie1.add_ingredient(food2, quantity_needed=9)   # available: 7 - test can't cook
+        kitchen1.add_recipie(recipie1)
+
+        recipie2 = Recipie('recipie2', serving_number=1)
+        recipie2.add_ingredient(food2, quantity_needed=4)   # available: 7 - test can cook
+        recipie1.add_ingredient(food3, quantity_needed=4)   # available: 4 - test can cook
         kitchen1.add_recipie(recipie2)
 
-        recipie3 = Recipie('recipie3', serving_number=1)
-        recipie3.add_ingredient(food4, quantity_needed=4)   # available: 7 - test can cook
+        recipie3 = Recipie('recipie3', serving_number=3)
+        recipie3.add_ingredient(food3, quantity_needed=6)   # available: 4 - test can't cook
         kitchen1.add_recipie(recipie3)
 
-        recipie4 = Recipie('recipie4', serving_number=3)
-        recipie4.add_ingredient(food5, quantity_needed=6)   # available: 4 - test can't cook
-        kitchen1.add_recipie(recipie4)
+        # individual test
+        assert kitchen1.can_cook(recipie2)
+        assert not kitchen1.can_cook(recipie1)
+        assert not kitchen1.can_cook(recipie3)
 
-        assert kitchen1.can_cook(recipie3)
-        assert not kitchen1.can_cook(recipie2)
-        assert not kitchen1.can_cook(recipie4)
-
-        assert len(kitchen1.get_cookable_recipies()) == 1     # recipie3
-        assert kitchen1.get_cookable_recipies()[0].name == 'recipie3'
+        # all cookable recipies
+        assert len(kitchen1.get_cookable_recipies()) == 1     # recipie2
+        assert kitchen1.get_cookable_recipies()[0].name == 'recipie2'
 
         # recipie with unavailable ingredient
         no_food = Food('nope', 'unavailable', 'none')
-        recipie5 = Recipie('recipie5', serving_number=1)
-        recipie5.add_ingredient(no_food, quantity_needed=3)
+        recipie4 = Recipie('recipie4', serving_number=1)
+        recipie4.add_ingredient(no_food, quantity_needed=3)
 
-        assert not kitchen1.can_cook(recipie5)
+        assert not kitchen1.can_cook(recipie4)
 
-        # what_do_i_need_to_cook: unavailable
-        food_needed = kitchen1.what_do_i_need_to_cook(recipie5)
+        # what_do_i_need_to_cook: unavailable ingredient
+        food_needed = kitchen1.what_do_i_need_to_cook(recipie4)
         assert len(food_needed) == 1
         assert no_food in food_needed
         assert food_needed[no_food] == 3        # because we don't have it
 
-        # what_do_i_need_to_cook: not enough
-        food_needed = kitchen1.what_do_i_need_to_cook(recipie4)
-        assert len(food_needed) == 1
-        assert food5 in food_needed
-        assert food_needed[food5] == 2          # because we only have 4
+        # what_do_i_need_to_cook: not enough ingredient
+        food_needed = kitchen1.what_do_i_need_to_cook(recipie1)
+        assert len(food_needed) == 2
+        assert food1 in food_needed
+        assert food2 in food_needed
+        assert food_needed[food1] == 3          # because we only have 1
+        assert food_needed[food2] == 2          # because we only have 7
