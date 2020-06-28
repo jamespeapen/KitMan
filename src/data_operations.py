@@ -12,10 +12,6 @@ import json
 class Data:
 
 
-    def __init__(self):
-        self.writer
-        self.reader
-
     def read_food_hook(self, food):
         return namedtuple('X', food.keys())(*food.values())
 
@@ -23,8 +19,9 @@ class Data:
         foods = []
         with open(filename, 'r') as food_file:
             for line in food_file:
-                food = json.loads(line)
-                foods.append(food)
+                food_dict = json.loads(line)
+                food_obj = Food(**food_dict)
+                foods.append(food_obj)
         return foods
 
     def write_food(self):
