@@ -12,7 +12,7 @@ class Food:
     name, a measuring unit and quantity needed
     """
 
-    def __init__(self, name, category, unit, quantity_needed_in_stock=2):
+    def __init__(self, name, category, unit, quantity_needed_in_stock=2, *args, **kwargs):
         self._name = name
         self._category = category
         self._quantity_needed_in_stock = quantity_needed_in_stock
@@ -110,11 +110,11 @@ class Kitchen:
         """get the number of recipies"""
         return len(self.recipies)
 
-    def add_to_pantry(self, Food, quantity):
-        if Food not in self.pantry:
-            self.pantry[Food] = quantity
+    def add_to_pantry(self, food, quantity):
+        if food not in self.pantry:
+            self.pantry[food] = quantity
         else:
-            self.pantry[Food] += quantity
+            self.pantry[food] += quantity
 
     def add_recipie(self, recipie):
         self.recipies.append(recipie)
