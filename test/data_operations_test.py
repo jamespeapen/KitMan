@@ -5,20 +5,48 @@ import json
 class TestData:
     '''Tests the data module'''
 
-    # initialize kitchen with food and recipies
-    kitchen = Kitchen()
 
-    food1 = Food(name='food1', unit='unit1', category='category1', quantity_needed_in_stock=1)
-    food2 = Food('food2', 'category2', 'unit2', quantity_needed_in_stock=1)
+    def test_write_food(self):
 
-    kitchen.add_to_pantry(food1, 10)
-    kitchen.add_to_pantry(food2, 20)
+        # initialize kitchen with food and recipies
+        kitchen = Kitchen()
 
-    recipie1 = Recipie('recipie01', serving_number=10)
-    recipie2 = Recipie('recipie02', serving_number=20)
+        food1 = Food(name='food1', unit='unit1', category='category1', quantity_needed_in_stock=10)
+        food2 = Food('food2', 'category2', 'unit2', quantity_needed_in_stock=20)
+        foods = [food1, food2]
 
-    kitchen.add_recipie(recipie1)
-    kitchen.add_recipie(recipie2)
+        kitchen.add_to_pantry(food1, 10)
+        kitchen.add_to_pantry(food2, 20)
+
+        recipie1 = Recipie('recipie01', serving_number=10)
+        recipie2 = Recipie('recipie02', serving_number=20)
+
+        kitchen.add_recipie(recipie1)
+        kitchen.add_recipie(recipie2)
+
+
+        data = Data()
+        data.write_food(foods, 'test/test_write_food.json')
+
+        # check file for valid json objects
+        with open('test/test_write_food.json') as file:
+            line = file.read()
+            json_data = json.loads(line)
+            assert type(json_data[0]) == dict
+            assert type(json_data[1]) == dict
+            assert json_data[0]['_name'] == 'food1'
+            assert json_data[0]['_unit'] == 'unit1'
+            assert json_data[0]['_category'] == 'category1'
+            assert json_data[0]['_quantity_needed_in_stock'] == 10
+            assert json_data[1]['_name'] == 'food2'
+            assert json_data[1]['_unit'] == 'unit2'
+            assert json_data[1]['_category'] == 'category2'
+            assert json_data[1]['_quantity_needed_in_stock'] == 20
+        file.close()
+
+        # clear file after test
+        with open('test/test_write_food.json', 'w') as file:
+              file.write('')
 
     def test_read_food(self):
         data = Data()
