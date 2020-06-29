@@ -12,15 +12,13 @@ import json
 class Data:
 
 
-    def read_food_hook(self, food):
-        return namedtuple('X', food.keys())(*food.values())
-
     def read_food(self, filename):
         foods = []
         with open(filename, 'r') as food_file:
-            for line in food_file:
-                food_dict = json.loads(line)
-                food_obj = Food(**food_dict)
+            string = food_file.read()
+            data = json.loads(string)
+            for datum in data:
+                food_obj = Food(**datum)
                 foods.append(food_obj)
         return foods
 
