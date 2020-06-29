@@ -22,8 +22,11 @@ class Data:
                 foods.append(food_obj)
         return foods
 
-    def write_food(self):
-        #TODO: write all food objects to file
+    def write_food(self, foods, filename):
+        with open(filename, 'w') as file:
+
+            file.write(json.dumps([food.__dict__ for food in foods], indent=4))
+
         return True
 
 
