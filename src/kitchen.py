@@ -61,7 +61,7 @@ class Recipie:
     checks the pantry for necessary items and reports availability
     """
 
-    def __init__(self, name, serving_number):
+    def __init__(self, name, serving_number, *args, **kwargs):
         self._name = name
         self._serving_number = serving_number
         self.ingredients = dict()
