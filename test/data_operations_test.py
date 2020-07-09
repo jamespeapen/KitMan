@@ -68,3 +68,26 @@ class TestData:
         assert foods[1].unit == 'unit5'
         assert foods[1].category == 'category5'
         assert foods[1].quantity_needed_in_stock == 5
+
+    def test_read_recipies(self):
+        data = Data()
+        recipies = data.read_recipies('test/test_read_recipies.json')
+
+        assert len(recipies) == 2
+
+        for recipie in recipies:
+            assert isinstance(recipie, Recipie)
+
+        test_recipie1 = recipies[0]
+        assert test_recipie1.name == 'test_recipie1'
+        assert test_recipie1.serving_number == 1
+        assert isinstance(test_recipie1.ingredients, dict)
+        assert test_recipie1.ingredients['ingredient11'] == 11
+        assert test_recipie1.ingredients['ingredient12'] == 12
+
+        test_recipie2 = recipies[1]
+        assert test_recipie2.name == 'test_recipie2'
+        assert test_recipie2.serving_number == 2
+        assert isinstance(test_recipie2.ingredients, dict)
+        assert test_recipie2.ingredients['ingredient21'] == 21
+        assert test_recipie2.ingredients['ingredient22'] == 22
