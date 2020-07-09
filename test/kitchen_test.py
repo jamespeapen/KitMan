@@ -29,22 +29,34 @@ class TestKitchen:
 
     def test_recipie(self):
 
-        # test init and independent parts
-        food2 = Food('food2', 'category2', 'unit2', quantity_needed_in_stock=5)
-        recipie1 = Recipie('recipie01', serving_number=10)
-        assert recipie1.name == 'recipie01'
-        assert recipie1.serving_number == 10
-        assert len(recipie1.ingredients) == 0
+        food1 = Food('food1', 'category1', 'unit1', 1)
+        food2 = Food('food2', 'category2', 'unit2', 2)
+        food3 = Food('food3', 'category3', 'unit3', 3)
 
-        # test setters
-        recipie1.name = 'recipie1'
-        recipie1.serving_number = 5
-        recipie1.add_ingredient(food2, quantity_needed=10)
+        recipie1 = Recipie('recipie1', 1, dict())
+        recipie1.add_ingredient(food1, 11)
+        recipie1.add_ingredient(food2, 12)
+
+        recipie2 = Recipie('recipie2', 2, dict())
+        recipie2.add_ingredient(food1, 21)
+        recipie2.add_ingredient(food2, 22)
+        recipie2.add_ingredient(food3, 23)
 
         assert recipie1.name == 'recipie1'
-        assert recipie1.serving_number == 5
-        assert len(recipie1.ingredients) == 1
-        assert recipie1.ingredient_quantity_needed(food2) == 10
+        assert recipie2.name == 'recipie2'
+
+        assert recipie1.serving_number == 1
+        assert recipie2.serving_number == 2
+
+        assert len(recipie1.ingredients) == 2
+        assert recipie1.ingredient_quantity_needed(food1) == 11
+        assert recipie1.ingredient_quantity_needed(food2) == 12
+
+        assert len(recipie2.ingredients) == 3
+        assert recipie2.ingredient_quantity_needed(food1) == 21
+        assert recipie2.ingredient_quantity_needed(food2) == 22
+        assert recipie2.ingredient_quantity_needed(food3) == 23
+
 
     def test_kitchen(self):
 
@@ -68,17 +80,17 @@ class TestKitchen:
         assert len(kitchen1.shopping_list) == 2    # food3, food5
 
         # add recipies
-        recipie1 = Recipie('recipie1', serving_number=10)
+        recipie1 = Recipie('recipie1', serving_number=10, ingredients=dict())
         recipie1.add_ingredient(food1, quantity_needed=4)   # available: 1 - test can't cook
         recipie1.add_ingredient(food2, quantity_needed=9)   # available: 7 - test can't cook
         kitchen1.add_recipie(recipie1)
 
-        recipie2 = Recipie('recipie2', serving_number=1)
+        recipie2 = Recipie('recipie2', serving_number=1, ingredients=dict())
         recipie2.add_ingredient(food2, quantity_needed=4)   # available: 7 - test can cook
-        recipie1.add_ingredient(food3, quantity_needed=4)   # available: 4 - test can cook
+        recipie2.add_ingredient(food3, quantity_needed=4)   # available: 4 - test can cook
         kitchen1.add_recipie(recipie2)
 
-        recipie3 = Recipie('recipie3', serving_number=3)
+        recipie3 = Recipie('recipie3', serving_number=3, ingredients=dict())
         recipie3.add_ingredient(food3, quantity_needed=6)   # available: 4 - test can't cook
         kitchen1.add_recipie(recipie3)
 
@@ -93,7 +105,7 @@ class TestKitchen:
 
         # recipie with unavailable ingredient
         no_food = Food('nope', 'unavailable', 'none')
-        recipie4 = Recipie('recipie4', serving_number=1)
+        recipie4 = Recipie('recipie4', serving_number=1, ingredients=dict())
         recipie4.add_ingredient(no_food, quantity_needed=3)
 
         assert not kitchen1.can_cook(recipie4)
