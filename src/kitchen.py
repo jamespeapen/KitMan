@@ -57,14 +57,21 @@ class Food:
 class Recipie:
     """
     The recipie class represents a recipie with
-    a dictionary of ingredients and their quatities,
+    a dictionary of ingredients and their quantities,
     checks the pantry for necessary items and reports availability
+    BUG: when a recipie is initialized without a populated dictionary, 
+    it needs the ingredient=dict() specified. Without it, the last recipie
+    object's ingredient dictionary becomes the new objects ingredient dictionary
     """
 
-    def __init__(self, name, serving_number, *args, **kwargs):
+    def __init__(self, name, serving_number, ingredients = dict(), *args, **kwargs):
         self._name = name
         self._serving_number = serving_number
-        self.ingredients = dict()
+        #self.ingredients = dict() # last version without json reading support
+
+        # when reading from json, the ingredient dictionary may be 
+        # populated, when just creating a recipie, it can be empty
+        self.ingredients = ingredients
 
     @property
     def name(self):
@@ -86,7 +93,7 @@ class Recipie:
 
     def add_ingredient(self, ingredient, quantity_needed):
         if ingredient in self.ingredients:
-            return "Ingredient already present"
+            raise RuntimeError("Ingredient already present")
         self.ingredients[ingredient] = quantity_needed
 
     def ingredient_quantity_needed(self, ingredient):
