@@ -47,7 +47,7 @@ class Data:
         '''write a list of recipies to json file'''
         with open(filename, 'w') as file:
 
-            file.write(json.dumps([recipies.__dict__ for recipie in recipies], indent=4))
+            file.write(json.dumps([recipie.__dict__ for recipie in recipies], indent=4))
 
     def read_pantry(self):
         #TODO: read pantry contents to memory
