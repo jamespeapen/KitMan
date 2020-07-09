@@ -18,20 +18,12 @@ class TestData:
         kitchen.add_to_pantry(food1, 10)
         kitchen.add_to_pantry(food2, 20)
 
-        recipie1 = Recipie('recipie01', serving_number=10)
-        recipie2 = Recipie('recipie02', serving_number=20)
-
-        kitchen.add_recipie(recipie1)
-        kitchen.add_recipie(recipie2)
-
-
         data = Data()
         data.write_food(foods, 'test/test_write_food.json')
 
         # check file for valid json objects
         with open('test/test_write_food.json') as file:
-            line = file.read()
-            json_data = json.loads(line)
+            json_data = json.loads(file.read())
             assert type(json_data[0]) == dict
             assert type(json_data[1]) == dict
             assert json_data[0]['_name'] == 'food1'
@@ -91,3 +83,40 @@ class TestData:
         assert isinstance(test_recipie2.ingredients, dict)
         assert test_recipie2.ingredients['ingredient21'] == 21
         assert test_recipie2.ingredients['ingredient22'] == 22
+
+    def test_write_recipies(self):
+        data = Data()
+
+        recipie1 = Recipie('recipie01', 10, dict())
+        recipie2 = Recipie('recipie02', 20, {'ingredient21': 21, 'ingredient22': 22})
+        recipie3 = Recipie('recipie03', 30, {'ingredient31': 31, 'ingredient32': 32, 'ingredient33': 33})
+        recipies = [recipie1, recipie2, recipie3]
+
+        data.write_recipies(recipies, 'test/test_write_recipies.json')
+        with open('test/test_write_recipies.json', 'r') as file:
+            json_data = json.loads(file.read())
+            assert type(json_data[0]) == dict
+            assert type(json_data[1]) == dict
+            assert type(json_data[2]) == dict
+
+            assert json_data[0]['_name'] == 'recipie01'
+            assert json_data[1]['_name'] == 'recipie02'
+            assert json_data[2]['_name'] == 'recipie03'
+
+            assert json_data[0]['_serving_number'] == 10
+            assert json_data[1]['_serving_number'] == 20
+            assert json_data[2]['_serving_number'] == 30
+
+            assert type(json_data[0]['ingredients']) == dict
+            assert type(json_data[1]['ingredients']) == dict
+            assert type(json_data[2]['ingredients']) == dict
+
+            assert len(json_data[0]['ingredients']) == 0
+            assert len(json_data[1]['ingredients']) == 2
+            assert len(json_data[2]['ingredients']) == 3
+
+            assert json_data[1]['ingredients']['ingredient21'] == 21
+            assert json_data[1]['ingredients']['ingredient22'] == 22
+            assert json_data[2]['ingredients']['ingredient31'] == 31
+            assert json_data[2]['ingredients']['ingredient32'] == 32
+            assert json_data[2]['ingredients']['ingredient33'] == 33
