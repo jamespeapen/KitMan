@@ -1,0 +1,20 @@
+[
+    {
+        "name": "test_recipie1",
+        "serving_number": 1,
+        "ingredients": 
+            {
+                "ingredient11": 11,
+                "ingredient12": 12
+            }
+    },
+    {
+        "name": "test_recipie2",
+        "serving_number": 2,
+        "ingredients": 
+            {
+                "ingredient21": 21,
+                "ingredient22": 22
+            }
+    }
+]
