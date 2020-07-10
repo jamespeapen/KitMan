@@ -120,3 +120,11 @@ class TestData:
             assert json_data[2]['ingredients']['ingredient31'] == 31
             assert json_data[2]['ingredients']['ingredient32'] == 32
             assert json_data[2]['ingredients']['ingredient33'] == 33
+
+        file.close()
+
+        # clear file after test
+        with open('test/test_write_recipies.json', 'w') as file:
+              file.write('')
+        file.close()
+
