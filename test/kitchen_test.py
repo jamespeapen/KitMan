@@ -57,6 +57,11 @@ class TestKitchen:
         assert recipie2.ingredient_quantity_needed(food2) == 22
         assert recipie2.ingredient_quantity_needed(food3) == 23
 
+        try:
+            recipie1.add_ingredient(food1, 11)
+        except RuntimeError:
+            pass
+
 
     def test_kitchen(self):
 
@@ -93,6 +98,13 @@ class TestKitchen:
         recipie3 = Recipie('recipie3', serving_number=3, ingredients=dict())
         recipie3.add_ingredient(food3, quantity_needed=6)   # available: 4 - test can't cook
         kitchen1.add_recipie(recipie3)
+
+        # duplicate recipie
+
+        try:
+            kitchen1.add_recipie(recipie3)
+        except RuntimeError:
+            pass
 
         # individual test
         assert kitchen1.can_cook(recipie2)
