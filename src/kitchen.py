@@ -126,8 +126,9 @@ class Kitchen:
 
     def add_recipie(self, recipie):
         """add recipie to pantry"""
-        if recipie.name in self.recipies:
-            raise RuntimeError('Ingredient already present')
+        for each_recipie in self.recipies:
+            if recipie.name == each_recipie.name:
+                raise RuntimeError('Recipie already present')
         self.recipies.append(recipie)
 
     def what_do_i_need_to_cook(self, recipie):
@@ -143,7 +144,7 @@ class Kitchen:
         return food_needed
 
     def can_cook(self, recipie):
-        """check if the ingredients for the recipie are in the pantry 
+        """check if the ingredients for the recipie are in the pantry
         in the required quantities"""
         for ingredient in recipie.ingredients:
             if ingredient not in self.pantry:
@@ -153,7 +154,7 @@ class Kitchen:
         return True
 
     def get_cookable_recipies(self):
-        """get all recipies for which ingredients are present in 
+        """get all recipies for which ingredients are present in
         required quantities in the panty"""
         cookable_recipies = []
 
