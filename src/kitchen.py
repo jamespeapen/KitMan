@@ -118,12 +118,16 @@ class Kitchen:
         return len(self.recipies)
 
     def add_to_pantry(self, food, quantity):
+        """add food to pantry if not already in"""
         if food not in self.pantry:
             self.pantry[food] = quantity
         else:
             self.pantry[food] += quantity
 
     def add_recipie(self, recipie):
+        """add recipie to pantry"""
+        if recipie.name in self.recipies:
+            raise RuntimeError('Ingredient already present')
         self.recipies.append(recipie)
 
     def what_do_i_need_to_cook(self, recipie):
@@ -139,6 +143,8 @@ class Kitchen:
         return food_needed
 
     def can_cook(self, recipie):
+        """check if the ingredients for the recipie are in the pantry 
+        in the required quantities"""
         for ingredient in recipie.ingredients:
             if ingredient not in self.pantry:
                 return False
@@ -147,6 +153,8 @@ class Kitchen:
         return True
 
     def get_cookable_recipies(self):
+        """get all recipies for which ingredients are present in 
+        required quantities in the panty"""
         cookable_recipies = []
 
         for recipie in self.recipies:
@@ -155,7 +163,8 @@ class Kitchen:
         return cookable_recipies
 
     def make_shopping_list(self):
-        '''create a shopping list based on quantity_needed_in_stock'''
+        '''create a shopping list based on quantity_needed_in_stock and
+        current quantities'''
         self.shopping_list = []
 
         for food in self.pantry:
