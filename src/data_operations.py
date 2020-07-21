@@ -49,9 +49,14 @@ class Data:
 
             file.write(json.dumps([recipie.__dict__ for recipie in recipies], indent=4))
 
-    def read_pantry(self):
-        #TODO: read pantry contents to memory
-        return True
+    def read_pantry(self, filename):
+        pantry = {}
+        with open(filename, 'r') as pantry_file:
+            string = pantry_file.read()
+            pantry_data = json.loads(string)
+            for datum in pantry_data:
+                pantry[datum['name']] = datum['quantity']
+        return pantry
 
     def write_pantry(self):
         #TODO: write all pantry to file
