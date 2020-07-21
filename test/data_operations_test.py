@@ -24,16 +24,19 @@ class TestData:
         # check file for valid json objects
         with open('test/test_write_food.json') as file:
             json_data = json.loads(file.read())
+
             assert type(json_data[0]) == dict
-            assert type(json_data[1]) == dict
             assert json_data[0]['_name'] == 'food1'
             assert json_data[0]['_unit'] == 'unit1'
             assert json_data[0]['_category'] == 'category1'
             assert json_data[0]['_quantity_needed_in_stock'] == 10
+
+            assert type(json_data[1]) == dict
             assert json_data[1]['_name'] == 'food2'
             assert json_data[1]['_unit'] == 'unit2'
             assert json_data[1]['_category'] == 'category2'
             assert json_data[1]['_quantity_needed_in_stock'] == 20
+
         file.close()
 
         # clear file after test
@@ -73,6 +76,7 @@ class TestData:
         test_recipie1 = recipies[0]
         assert test_recipie1.name == 'test_recipie1'
         assert test_recipie1.serving_number == 1
+
         assert isinstance(test_recipie1.ingredients, dict)
         assert test_recipie1.ingredients['ingredient11'] == 11
         assert test_recipie1.ingredients['ingredient12'] == 12
@@ -80,6 +84,7 @@ class TestData:
         test_recipie2 = recipies[1]
         assert test_recipie2.name == 'test_recipie2'
         assert test_recipie2.serving_number == 2
+
         assert isinstance(test_recipie2.ingredients, dict)
         assert test_recipie2.ingredients['ingredient21'] == 21
         assert test_recipie2.ingredients['ingredient22'] == 22
@@ -128,3 +133,9 @@ class TestData:
               file.write('')
         file.close()
 
+    def test_read_pantry(self):
+        data = Data()
+
+        pantry = data.read_pantry('test/test_read_pantry.json')
+
+        assert len(pantry) == 4
