@@ -176,3 +176,31 @@ class TestData:
         with open('test/test_write_pantry.json', 'w') as written_pantry:
             written_pantry.write('')
         written_pantry.close()
+
+    def test_write_shopping_list(sefl):
+
+        kitchen1 = Kitchen()
+        assert len(kitchen1.pantry) == 0
+
+        # add food to pantry
+        food1 = Food('food1', 'category1', 'unit1')
+        food2 = Food('food2', 'category2', 'unit2', quantity_needed_in_stock=4)
+        food3 = Food('food3', 'category3', 'unit3', quantity_needed_in_stock=10)
+
+        kitchen1.add_to_pantry(food1, quantity=1)    # in list
+        kitchen1.add_to_pantry(food2, quantity=7)    # not in list
+        kitchen1.add_to_pantry(food3, quantity=4)    # in list
+
+        assert len(kitchen1.pantry) == 3
+
+        kitchen1.make_shopping_list()
+        assert len(kitchen1.shopping_list) == 2
+
+        data = Data()
+        data.write_shopping_list(kitchen1.shopping_list, 'test/test_write_shopping_list.json')
+
+        with open('test/test_write_shopping_list.json', 'r') as list_reader:
+            written_list = json.loads(list_reader.read())
+            assert written_list['food1'] == 1
+            assert written_list['food3'] == 6
+        list_reader.close()
