@@ -13,8 +13,11 @@ class Data:
 
 
     def read_food(self, filename):
-        '''Read food objects from json file and make
-        food objects from them'''
+        '''
+        Read food objects from json file and make
+        food objects from them
+        :param filename: json file to read food objects from 
+        '''
         foods = []
         with open(filename, 'r') as food_file:
             string = food_file.read()
@@ -25,14 +28,21 @@ class Data:
         return foods
 
     def write_food(self, foods, filename):
-        '''write a list of foods to a json file'''
+        '''
+        write a list of foods to a json file
+        :param foods: list of food objects
+        :param filename: json file to write food objects to 
+        '''
         with open(filename, 'w') as file:
 
             file.write(json.dumps([food.__dict__ for food in foods], indent=4))
 
     def read_recipies(self, filename):
-        '''Read recipie objects from json file and make
-        recipie objects from them'''
+        '''
+        Read recipie objects from json file and make
+        recipie objects from them
+        :param filename: json file to read recipie objects from
+        '''
         recipies = []
         with open(filename, 'r') as recipie_file:
             string = recipie_file.read()
@@ -44,7 +54,12 @@ class Data:
 
 
     def write_recipies(self, recipies, filename):
-        '''write a list of recipies to json file'''
+        '''
+        write a list of recipies to json file
+        :param recipies: list of recipie objects
+        :param filename: json file to write recipies to
+        '''
+
         with open(filename, 'w') as file:
 
             file.write(json.dumps([recipie.__dict__ for recipie in recipies], indent=4))
