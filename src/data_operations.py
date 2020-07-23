@@ -50,18 +50,34 @@ class Data:
             file.write(json.dumps([recipie.__dict__ for recipie in recipies], indent=4))
 
     def read_pantry(self, filename):
-        pantry = {}
-        with open(filename, 'r') as pantry_file:
-            string = pantry_file.read()
-            pantry_data = json.loads(string)
-            for datum in pantry_data:
-                pantry[datum['name']] = datum['quantity']
+        '''
+        reads pantry contents from file. only the names and quantity
+        are written to disk
+        @recipies: list of recipie objects
+        :param filename: the json file containing pantry data
+        '''
+
+
+        with open(filename, 'r') as pantry_file_reader:
+            pantry = json.loads(pantry_file_reader.read())
         return pantry
 
-    def write_pantry(self):
-        #TODO: write all pantry to file
-        return True
+    def write_pantry(self, pantry, filename):
+        '''
+        writes the names and quantity of food objects in the pantry to file
+        :param pantry: dictionary of foods and their quantities from a Kitchen object
+        :param filename: json file to write pantry to
+        '''
 
+        writable_pantry = {}
+
+        # extract names and quantities
+        for food in pantry:
+            writable_pantry[food.name] = pantry[food]
+
+        with open(filename, 'w') as pantry_file_writer:
+            pantry_file_writer.write(json.dumps(writable_pantry, indent=4))
+        pantry_file_writer.close()
 
     def write_shopping_list(self):
         #TODO: write shopping list to file
