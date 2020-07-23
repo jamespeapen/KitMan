@@ -82,7 +82,9 @@ class TestKitchen:
         assert len(kitchen1.pantry) == 3
 
         kitchen1.make_shopping_list()
-        assert len(kitchen1.shopping_list) == 2    # food3, food5
+        assert len(kitchen1.shopping_list) == 2    # food1, food3
+        assert food1 in kitchen1.shopping_list
+        assert food3 in kitchen1.shopping_list
 
         # add recipies
         recipie1 = Recipie('recipie1', serving_number=10, ingredients=dict())
