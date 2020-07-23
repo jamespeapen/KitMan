@@ -166,10 +166,11 @@ class Kitchen:
     def make_shopping_list(self):
         '''create a shopping list based on quantity_needed_in_stock and
         current quantities'''
-        self.shopping_list = []
+        self.shopping_list = {}
 
         for food in self.pantry:
             if self.pantry[food] < food.quantity_needed_in_stock:
-                self.shopping_list.append(food)
+                self.shopping_list[food.name] = food.quantity_needed_in_stock - self.pantry[food]
+
         return self.shopping_list
 
