@@ -94,6 +94,14 @@ class Data:
             pantry_file_writer.write(json.dumps(writable_pantry, indent=4))
         pantry_file_writer.close()
 
-    def write_shopping_list(self):
-        #TODO: write shopping list to file
-        return True
+    def write_shopping_list(self, shopping_list, filename):
+        '''
+        writes shopping_list to file
+        :param shopping_list: dict of foods and quantity needed
+        :param filename: json file to write list to
+        '''
+
+        with open(filename, 'w') as shopping_list_writer:
+            shopping_list_writer.write(json.dumps(shopping_list, indent=4))
+        shopping_list_writer.close()
+
