@@ -12,7 +12,13 @@ class Food:
     name, a measuring unit and quantity needed
     """
 
-    def __init__(self, name, category, unit, quantity_needed_in_stock=2, *args, **kwargs):
+    def __init__(self,
+                 name,
+                 category,
+                 unit,
+                 quantity_needed_in_stock=2,
+                 *args,
+                 **kwargs):
         self._name = name
         self._category = category
         self._quantity_needed_in_stock = quantity_needed_in_stock
@@ -54,22 +60,29 @@ class Food:
         """change the shopping priority"""
         self._quantity_needed_in_stock = quantity_needed_in_stock
 
+
 class Recipie:
     """
     The recipie class represents a recipie with
     a dictionary of ingredients and their quantities,
     checks the pantry for necessary items and reports availability
-    BUG: when a recipie is initialized without a populated dictionary, 
+    BUG: when a recipie is initialized without a populated dictionary,
     it needs the ingredient=dict() specified. Without it, the last recipie
-    object's ingredient dictionary becomes the new objects ingredient dictionary
+    object's ingredient dictionary becomes
+    the new objects ingredient dictionary
     """
 
-    def __init__(self, name, serving_number, ingredients = dict(), *args, **kwargs):
+    def __init__(self,
+                 name,
+                 serving_number,
+                 ingredients=dict(),
+                 *args,
+                 **kwargs):
         self._name = name
         self._serving_number = serving_number
-        #self.ingredients = dict() # last version without json reading support
+        # self.ingredients = dict() # last version without json reading support
 
-        # when reading from json, the ingredient dictionary may be 
+        # when reading from json, the ingredient dictionary may be
         # populated, when just creating a recipie, it can be empty
         self.ingredients = ingredients
 
@@ -98,7 +111,6 @@ class Recipie:
 
     def ingredient_quantity_needed(self, ingredient):
         return self.ingredients[ingredient]
-
 
 
 class Kitchen:
@@ -132,14 +144,15 @@ class Kitchen:
         self.recipies.append(recipie)
 
     def what_do_i_need_to_cook(self, recipie):
-        food_needed={}
+        food_needed = {}
 
         for ingredient in recipie.ingredients:
             if ingredient not in self.pantry:
                 food_needed[ingredient] = recipie.ingredients[ingredient]
 
             elif recipie.ingredients[ingredient] > self.pantry[ingredient]:
-                food_needed[ingredient] = recipie.ingredients[ingredient] - self.pantry[ingredient]
+                food_needed[ingredient] = recipie.ingredients[ingredient]
+                - self.pantry[ingredient]
 
         return food_needed
 
@@ -170,7 +183,7 @@ class Kitchen:
 
         for food in self.pantry:
             if self.pantry[food] < food.quantity_needed_in_stock:
-                self.shopping_list[food.name] = food.quantity_needed_in_stock - self.pantry[food]
+                self.shopping_list[food.name] = food.quantity_needed_in_stock
+                - self.pantry[food]
 
         return self.shopping_list
-
