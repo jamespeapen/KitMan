@@ -5,18 +5,17 @@ Created 26 June 2020
 Author: James Eapen
 '''
 
-from src.kitchen import Food, Recipie, Kitchen
-from collections import namedtuple
+from src.kitchen import Food, Recipie
 import json
 
-class Data:
 
+class Data:
 
     def read_food(self, filename):
         '''
         Read food objects from json file and make
         food objects from them
-        :param filename: json file to read food objects from 
+        :param filename: json file to read food objects from
         '''
         foods = []
         with open(filename, 'r') as food_file:
@@ -31,7 +30,7 @@ class Data:
         '''
         write a list of foods to a json file
         :param foods: list of food objects
-        :param filename: json file to write food objects to 
+        :param filename: json file to write food objects to
         '''
         with open(filename, 'w') as file:
 
@@ -52,7 +51,6 @@ class Data:
                 recipies.append(recipie_obj)
         return recipies
 
-
     def write_recipies(self, recipies, filename):
         '''
         write a list of recipies to json file
@@ -62,7 +60,8 @@ class Data:
 
         with open(filename, 'w') as file:
 
-            file.write(json.dumps([recipie.__dict__ for recipie in recipies], indent=4))
+            file.write(json.dumps(
+                [recipie.__dict__ for recipie in recipies], indent=4))
 
     def read_pantry(self, filename):
         '''
@@ -72,15 +71,16 @@ class Data:
         :param filename: the json file containing pantry data
         '''
 
-
         with open(filename, 'r') as pantry_file_reader:
             pantry = json.loads(pantry_file_reader.read())
         return pantry
 
     def write_pantry(self, pantry, filename):
         '''
-        writes the names and quantity of food objects in the pantry to file
-        :param pantry: dictionary of foods and their quantities from a Kitchen object
+        writes the names and quantity of food objects in the pantry
+        to file
+        :param pantry: dictionary of foods and quantities from a
+        Kitchen object
         :param filename: json file to write pantry to
         '''
 
@@ -104,4 +104,3 @@ class Data:
         with open(filename, 'w') as shopping_list_writer:
             shopping_list_writer.write(json.dumps(shopping_list, indent=4))
         shopping_list_writer.close()
-
