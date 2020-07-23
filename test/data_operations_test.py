@@ -139,3 +139,40 @@ class TestData:
         pantry = data.read_pantry('test/test_read_pantry.json')
 
         assert len(pantry) == 4
+        assert pantry['food1'] == 1
+        assert pantry['food2'] == 2
+        assert pantry['food3'] == 3
+        assert pantry['food4'] == 4
+
+    def test_write_pantry(self):
+
+        kitchen = Kitchen()
+
+        food1 = Food(name='food1', unit='unit1', category='category1', quantity_needed_in_stock=10)
+        food2 = Food('food2', 'category2', 'unit2', quantity_needed_in_stock=20)
+        food3 = Food('food3', 'category3', 'unit3', quantity_needed_in_stock=30)
+        food4 = Food('food4', 'category4', 'unit4', quantity_needed_in_stock=40)
+
+        foods = [food1, food2]
+
+        kitchen.add_to_pantry(food1, 10)
+        kitchen.add_to_pantry(food2, 20)
+        kitchen.add_to_pantry(food3, 30)
+        kitchen.add_to_pantry(food4, 40)
+
+        data = Data()
+        data.write_pantry(kitchen.pantry, 'test/test_write_pantry.json')
+
+        with open('test/test_write_pantry.json', 'r') as written_pantry:
+            pantry_dict = json.loads(written_pantry.read())
+
+            assert pantry_dict['food1'] == 10
+            assert pantry_dict['food2'] == 20
+            assert pantry_dict['food3'] == 30
+            assert pantry_dict['food4'] == 40
+        written_pantry.close
+
+        #clear file
+        with open('test/test_write_pantry.json', 'w') as written_pantry:
+            written_pantry.write('')
+        written_pantry.close()
