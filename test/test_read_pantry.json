@@ -1,18 +1,6 @@
-[
-    {
-        "name": "food1",
-        "quantity": 1
-    },
-    {
-        "name": "food2",
-        "quantity": 2
-    },
-    {
-        "name": "food3",
-        "quantity": 3
-    },
-    {
-        "name": "food4",
-        "quantity": 4
-    }
-]
+{
+    "food1": 1,
+    "food2": 2,
+    "food3": 3,
+    "food4": 4
+}
