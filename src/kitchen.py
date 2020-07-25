@@ -12,13 +12,7 @@ class Food:
     name, a measuring unit and quantity needed
     """
 
-    def __init__(self,
-                 name,
-                 category,
-                 unit,
-                 quantity_needed_in_stock=2,
-                 *args,
-                 **kwargs):
+    def __init__(self, name, category, unit, quantity_needed_in_stock=2, *args, **kwargs):
         self._name = name
         self._category = category
         self._quantity_needed_in_stock = quantity_needed_in_stock
