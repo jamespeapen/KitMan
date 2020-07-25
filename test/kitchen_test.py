@@ -1,6 +1,6 @@
+from src.kitchen import Food, Recipie, Kitchen
 import sys
 sys.path.append('../src')
-from src.kitchen import Food, Recipie, Kitchen
 
 
 class TestKitchen:
@@ -9,7 +9,11 @@ class TestKitchen:
     def test_food(self):
 
         # test init and independent parts
-        food1 = Food(name='food01', unit='unit01', category='category01', quantity_needed_in_stock=5)
+        food1 = Food(name='food01',
+                     unit='unit01',
+                     category='category01',
+                     quantity_needed_in_stock=5)
+
         assert food1.name == 'food01'
         assert food1.category == 'category01'
         assert food1.unit == 'unit01'
@@ -62,7 +66,6 @@ class TestKitchen:
         except RuntimeError:
             pass
 
-
     def test_kitchen(self):
 
         # test init and independent parts
@@ -71,13 +74,24 @@ class TestKitchen:
         assert len(kitchen1.pantry) == 0
 
         # add food to pantry
-        food1 = Food('food1', 'category1', 'unit1')     # default needed: 2, test needed 
-        food2 = Food('food2', 'category2', 'unit2', quantity_needed_in_stock=4)     # test not needed 
-        food3 = Food('food3', 'category3', 'unit3', quantity_needed_in_stock=10)    #test needed 
+        # default needed: 2, testing needed
+        food1 = Food('food1', 'category1', 'unit1')
 
-        kitchen1.add_to_pantry(food1, quantity=1)    # test needed 
-        kitchen1.add_to_pantry(food2, quantity=7)    # test not needed 
-        kitchen1.add_to_pantry(food3, quantity=4)    # test needed 
+        # test not needed
+        food2 = Food('food2',
+                     'category2',
+                     'unit2',
+                     quantity_needed_in_stock=4)
+
+        # testing needed
+        food3 = Food('food3',
+                     'category3',
+                     'unit3',
+                     quantity_needed_in_stock=10)
+
+        kitchen1.add_to_pantry(food1, quantity=1)    # testing needed
+        kitchen1.add_to_pantry(food2, quantity=7)    # testing not needed
+        kitchen1.add_to_pantry(food3, quantity=4)    # testing needed
 
         assert len(kitchen1.pantry) == 3
 
@@ -88,17 +102,30 @@ class TestKitchen:
 
         # add recipies
         recipie1 = Recipie('recipie1', serving_number=10, ingredients=dict())
-        recipie1.add_ingredient(food1, quantity_needed=4)   # available: 1 - test can't cook
-        recipie1.add_ingredient(food2, quantity_needed=9)   # available: 7 - test can't cook
+
+        # available: 1 - test can't cook
+        recipie1.add_ingredient(food1, quantity_needed=4)
+
+        # available: 7 - test can't cook
+        recipie1.add_ingredient(food2, quantity_needed=9)
+
         kitchen1.add_recipie(recipie1)
 
         recipie2 = Recipie('recipie2', serving_number=1, ingredients=dict())
-        recipie2.add_ingredient(food2, quantity_needed=4)   # available: 7 - test can cook
-        recipie2.add_ingredient(food3, quantity_needed=4)   # available: 4 - test can cook
+
+        # available: 7 - test can cook
+        recipie2.add_ingredient(food2, quantity_needed=4)
+
+        # available: 4 - test can cook
+        recipie2.add_ingredient(food3, quantity_needed=4)
+
         kitchen1.add_recipie(recipie2)
 
         recipie3 = Recipie('recipie3', serving_number=3, ingredients=dict())
-        recipie3.add_ingredient(food3, quantity_needed=6)   # available: 4 - test can't cook
+
+        # available: 4 - test can't cook
+        recipie3.add_ingredient(food3, quantity_needed=6)
+
         kitchen1.add_recipie(recipie3)
 
         # duplicate recipie
