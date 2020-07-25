@@ -151,7 +151,7 @@ class Kitchen:
                 food_needed[ingredient] = recipie.ingredients[ingredient]
 
             elif recipie.ingredients[ingredient] > self.pantry[ingredient]:
-                food_needed[ingredient] = recipie.ingredients[ingredient]
+                food_needed[ingredient] = recipie.ingredients[ingredient] \
                 - self.pantry[ingredient]
 
         return food_needed
@@ -183,7 +183,7 @@ class Kitchen:
 
         for food in self.pantry:
             if self.pantry[food] < food.quantity_needed_in_stock:
-                self.shopping_list[food.name] = food.quantity_needed_in_stock
-                - self.pantry[food]
+                self.shopping_list[food.name] = food.quantity_needed_in_stock \
+                    - self.pantry[food]
 
         return self.shopping_list
