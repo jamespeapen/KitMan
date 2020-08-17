@@ -13,27 +13,20 @@ class Menu:
     def __init__(self):
 
         self.stdscr = curses.initscr()
-        self.menu_list = ["Kitchen", "Recipies", "Cook"]
 
     def menu(self, stdscr, current_row):
 
-        curses.start_color()
-        curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
-
         height, width = self.stdscr.getmaxyx()
 
-        for idx, element in enumerate(self.menu_list):
+        menu_bar = ["1: Kitchen", "2: Pantry", "3: Recipies", "4: Recipies", "5: Shopping"]
 
-            y = height // 2 + idx
-            x = width // 2 + len(element) // 2
+        y = 0
+        x = 1
 
-            if idx == current_row:
-                self.stdscr.attron(curses.color_pair(1))
-                self.stdscr.addstr(y, x, element)
-                self.stdscr.attroff(curses.color_pair(1))
+        for idx, element in enumerate(menu_bar):
 
-            else:
-                self.stdscr.addstr(y, x, element)
+            self.stdscr.addstr(y, x, element)
+            x += len(element) + len(element) //5
 
         self.stdscr.refresh()
 
