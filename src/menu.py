@@ -14,11 +14,13 @@ class Menu:
 
     def __init__(self):
 
+        # kitchen and data objects
         self.data = Data()
         self.kitchen = Kitchen()
         self.kitchen.pantry = self.data.read_pantry('test/test_read_pantry.json')
         self.kitchen.recipies = self.data.read_recipies('test/test_read_recipies.json')
 
+        # main screen
         self.stdscr = curses.initscr()
         self.height, self.width = self.stdscr.getmaxyx()
 
@@ -32,10 +34,12 @@ class Menu:
                                             self.width // 3, 4,
                                             2 * (self.width // 3))
 
+        # colors
         curses.start_color()
         curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
 
     def menu(self, stdscr, current_row):
+        """Main menu bar"""
 
         menu_bar = ["1: Pantry",
                     "2: Recipies",
@@ -52,6 +56,7 @@ class Menu:
         self.menubar.refresh()
 
     def pantry(self, stdscr, current_row):
+        """Show pantry in the data window"""
 
         self.data_window.clear()
 
@@ -72,6 +77,7 @@ class Menu:
         self.data_window.refresh()
 
     def recipies(self, stdscr, current_row):
+        """show recipies in the data window"""
 
         self.data_window.clear()
         self.data_window.addstr(0, 0, "Recipies")
@@ -92,13 +98,16 @@ class Menu:
         self.data_window.refresh()
 
     def refresh_data_window(self, stdscr, current_row, menu_mode):
+        """Check what menu item method was selected before scroll event
+        and call that method"""
+
         if menu_mode == 1:
             self.pantry(stdscr, current_row)
         elif menu_mode == 2:
             self.recipies(stdscr, current_row)
 
-
     def main(self, stdscr):
+        """Main event loop and scroll control"""
 
         curses.curs_set(0)
 
@@ -109,6 +118,7 @@ class Menu:
         while True:
             key = self.stdscr.getch()
 
+            # main menu selection
             if key == ord('1'):
                 self.pantry(stdscr, current_row)
                 menu_mode = 1
@@ -120,17 +130,20 @@ class Menu:
             elif key == ord("q"):
                 break
 
+            # scrolling
             elif (key == curses.KEY_UP or key == ord("k")) \
-                and current_row > 0:
+            and current_row > 0:
                 current_row -= 1
                 self.refresh_data_window(stdscr, current_row, menu_mode)
 
             elif (key == curses.KEY_DOWN or key == ord("j")):
 
-                if menu_mode == 1 and current_row < len(self.kitchen.pantry) - 1:
+                if menu_mode == 1 \
+                and current_row < len(self.kitchen.pantry) - 1:
                     current_row += 1
 
-                if menu_mode == 2 and current_row < len(self.kitchen.recipies) -1:
+                if menu_mode == 2 \
+                and current_row < len(self.kitchen.recipies) - 1:
                     current_row += 1
 
                 self.refresh_data_window(stdscr, current_row, menu_mode)
