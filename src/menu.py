@@ -120,10 +120,12 @@ class Menu:
 
             # main menu selection
             if key == ord('1'):
+                current_row = 0
                 self.pantry(stdscr, current_row)
                 menu_mode = 1
 
             elif key == ord('2'):
+                current_row = 0
                 self.recipies(stdscr, current_row)
                 menu_mode = 2
 
