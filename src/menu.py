@@ -16,6 +16,8 @@ class Menu:
 
         self.data = Data()
         self.kitchen = Kitchen()
+        self.kitchen.pantry = self.data.read_pantry('test/test_read_pantry.json')
+        self.kitchen.recipies = self.data.read_recipies('test/test_read_recipies.json')
 
         self.stdscr = curses.initscr()
         self.height, self.width = self.stdscr.getmaxyx()
@@ -49,21 +51,21 @@ class Menu:
     def pantry(self, stdscr):
 
         self.data_window.clear()
+
         self.data_window.addstr(0, 0, "Food\tQuantity in stock")
-        self.kitchen.pantry = self.data.read_pantry('test/test_read_pantry.json')
         y = 2
         x = 0
 
         for food in self.kitchen.pantry:
             self.data_window.addstr(y, x, food + '\t' + str(self.kitchen.pantry[food]))
             y += 2
+
         self.data_window.refresh()
 
     def recipies(self, stdscr):
 
         self.data_window.clear()
         self.data_window.addstr(0, 0, "Recipies")
-        self.kitchen.recipies = self.data.read_recipies('test/test_read_recipies.json')
         y = 2
         x = 0
 
@@ -103,7 +105,7 @@ class Menu:
             self.stdscr.refresh()
 
 
-menu1 = Menu()
 print(pyfiglet.figlet_format("KitMan"))
 time.sleep(2)
+menu1 = Menu()
 curses.wrapper(menu1.main)
