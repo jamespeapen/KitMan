@@ -64,6 +64,8 @@ class Food:
         """change the current stock amount"""
         self._quantity_in_stock = quantity_in_stock
 
+    def __str__(self):
+        return "{0}\nUnit: {1}\nQuantity needed in stock: {2}".format(self.name.capitalize(), self.unit, self.quantity_needed_in_stock)
 
 class Recipie:
     """
