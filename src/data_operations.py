@@ -5,7 +5,7 @@ Created 26 June 2020
 Author: James Eapen
 '''
 
-from src.kitchen import Food, Recipie
+from kitchen import Food, Recipie
 import json
 
 
@@ -17,13 +17,13 @@ class Data:
         food objects from them
         :param filename: json file to read food objects from
         '''
-        foods = []
+        foods = {}
         with open(filename, 'r') as food_file:
             string = food_file.read()
             data = json.loads(string)
             for datum in data:
                 food_obj = Food(**datum)
-                foods.append(food_obj)
+                foods[food_obj.name] = food_obj
         return foods
 
     def write_pantry(self, pantry, filename):
