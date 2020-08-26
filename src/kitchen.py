@@ -12,11 +12,12 @@ class Food:
     name, a measuring unit and quantity needed
     """
 
-    def __init__(self, name, category, unit, quantity_needed_in_stock=2, *args, **kwargs):
+    def __init__(self, name, category, unit, quantity_needed_in_stock, *args, **kwargs):
         self._name = name
         self._category = category
         self._quantity_needed_in_stock = quantity_needed_in_stock
         self._unit = unit
+        self._quantity_in_stock=0
 
     @property
     def name(self):
@@ -53,6 +54,15 @@ class Food:
     def quantity_needed_in_stock(self, quantity_needed_in_stock):
         """change the shopping priority"""
         self._quantity_needed_in_stock = quantity_needed_in_stock
+
+    @property
+    def quantity_in_stock(self):
+        return self._quantity_in_stock
+
+    @quantity_in_stock.setter
+    def quantity_in_stock(self, quantity_in_stock):
+        """change the current stock amount"""
+        self._quantity_in_stock = quantity_in_stock
 
 
 class Recipie:
@@ -125,10 +135,11 @@ class Kitchen:
 
     def add_to_pantry(self, food, quantity):
         """add food to pantry if not already in"""
-        if food not in self.pantry:
-            self.pantry[food] = quantity
+        if food.name not in self.pantry:
+            self.pantry[food.name] = food
+            self.pantry[food.name].quantity_in_stock = quantity
         else:
-            self.pantry[food] += quantity
+            self.pantry[food.name].quantity_in_stock += quantity
 
     def add_recipie(self, recipie):
         """add recipie to pantry"""
@@ -141,12 +152,12 @@ class Kitchen:
         food_needed = {}
 
         for ingredient in recipie.ingredients:
-            if ingredient not in self.pantry:
+            if ingredient.name not in self.pantry:
                 food_needed[ingredient] = recipie.ingredients[ingredient]
 
-            elif recipie.ingredients[ingredient] > self.pantry[ingredient]:
+            elif recipie.ingredients[ingredient] > self.pantry[ingredient.name].quantity_in_stock:
                 food_needed[ingredient] = recipie.ingredients[ingredient] \
-                - self.pantry[ingredient]
+                - self.pantry[ingredient.name].quantity_in_stock
 
         return food_needed
 
@@ -154,9 +165,9 @@ class Kitchen:
         """check if the ingredients for the recipie are in the pantry
         in the required quantities"""
         for ingredient in recipie.ingredients:
-            if ingredient not in self.pantry:
+            if ingredient.name not in self.pantry:
                 return False
-            elif self.pantry[ingredient] < recipie.ingredients[ingredient]:
+            elif self.pantry[ingredient.name].quantity_in_stock < recipie.ingredients[ingredient]:
                 return False
         return True
 
@@ -175,9 +186,9 @@ class Kitchen:
         current quantities'''
         self.shopping_list = {}
 
-        for food in self.pantry:
-            if self.pantry[food] < food.quantity_needed_in_stock:
-                self.shopping_list[food.name] = food.quantity_needed_in_stock \
-                    - self.pantry[food]
+        for food_name in self.pantry:
+            if self.pantry[food_name].quantity_in_stock < self.pantry[food_name].quantity_needed_in_stock:
+                self.shopping_list[food_name] = self.pantry[food_name].quantity_needed_in_stock \
+                    - self.pantry[food_name].quantity_in_stock
 
         return self.shopping_list
