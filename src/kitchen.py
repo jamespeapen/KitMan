@@ -15,8 +15,8 @@ class Food:
     def __init__(self, name, category, unit, quantity_needed_in_stock, quantity_in_stock=0, *args, **kwargs):
         self._name = name
         self._category = category
-        self._quantity_needed_in_stock = quantity_needed_in_stock
         self._unit = unit
+        self._quantity_needed_in_stock = quantity_needed_in_stock
         self._quantity_in_stock=quantity_in_stock
 
     @property
