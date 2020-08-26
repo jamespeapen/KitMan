@@ -17,9 +17,8 @@ class Menu:
         # kitchen and data objects
         self.data = Data()
         self.kitchen = Kitchen()
-        self.foods = self.data.read_food('test/test_read_food.json')
-        self.kitchen.pantry = self.data.read_pantry('test/test_read_pantry.json')
-        self.kitchen.recipies = self.data.read_recipies('test/test_read_recipies.json')
+        self.kitchen.pantry = self.data.read_pantry('src/demo/pantry.json')
+        self.kitchen.recipies = self.data.read_recipies('src/demo/recipies.json')
 
         # main screen
         self.stdscr = curses.initscr()
@@ -68,13 +67,14 @@ class Menu:
         x = 0
 
         for idx, food in enumerate(self.kitchen.pantry):
+            food_obj = self.kitchen.pantry[food]
             if idx == current_row:
                 self.data_window.attron(curses.color_pair(1))
-                self.data_window.addstr(y, x, food + '\t' + str(self.kitchen.pantry[food]))
+                self.data_window.addstr(y, x, food.capitalize() + '\t' + str(food_obj.quantity_in_stock) + ' ' + food_obj.unit)
                 self.data_window.attroff(curses.color_pair(1))
-                self.preview_window.addstr(str(self.kitchen.pantry[food]))
+                self.preview_window.addstr(str(food_obj))
             else:
-                self.data_window.addstr(y, x, food + '\t' + str(self.kitchen.pantry[food]))
+                self.data_window.addstr(y, x, food.capitalize() + '\t' + str(food_obj.quantity_in_stock) + ' ' + food_obj.unit)
 
             y += 2
 
@@ -96,13 +96,13 @@ class Menu:
         for idx, recipie in enumerate(self.kitchen.recipies):
             if idx == current_row:
                 self.data_window.attron(curses.color_pair(1))
-                self.data_window.addstr(y, x, recipie.name)
+                self.data_window.addstr(y, x, recipie.name.capitalize())
                 self.data_window.attroff(curses.color_pair(1))
                 for ingredient in recipie.ingredients:
-                    self.preview_window.addstr(ingredient + '\t' + str(recipie.ingredients[ingredient]) + '\n\n')
+                    self.preview_window.addstr(ingredient.capitalize() + '\t' + str(recipie.ingredients[ingredient]) + '\n\n')
 
             else:
-                self.data_window.addstr(y, x, recipie.name)
+                self.data_window.addstr(y, x, recipie.name.capitalize())
 
             y += 2
 
