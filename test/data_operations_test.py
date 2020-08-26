@@ -50,20 +50,20 @@ class TestData:
 
         assert len(foods) == 2
 
-        # check that Food objects are returned
+        # check that Food objects are the value in the pair
         for food in foods:
-            assert isinstance(food, Food)
+            assert isinstance(foods[food], Food)
 
         # check object attributes
-        assert foods[0].name == 'food4'
-        assert foods[0].unit == 'unit4'
-        assert foods[0].category == 'category4'
-        assert foods[0].quantity_needed_in_stock == 4
+        assert foods['food4'].name == 'food4'
+        assert foods['food4'].unit == 'unit4'
+        assert foods['food4'].category == 'category4'
+        assert foods['food4'].quantity_needed_in_stock == 4
 
-        assert foods[1].name == 'food5'
-        assert foods[1].unit == 'unit5'
-        assert foods[1].category == 'category5'
-        assert foods[1].quantity_needed_in_stock == 5
+        assert foods['food5'].name == 'food5'
+        assert foods['food5'].unit == 'unit5'
+        assert foods['food5'].category == 'category5'
+        assert foods['food5'].quantity_needed_in_stock == 5
 
     def test_read_recipies(self):
         data = Data()
