@@ -82,6 +82,7 @@ class Recipie:
                  name,
                  serving_number,
                  ingredients=dict(),
+                 instructions=list(),
                  *args,
                  **kwargs):
         self._name = name
@@ -91,6 +92,8 @@ class Recipie:
         # when reading from json, the ingredient dictionary may be
         # populated, when just creating a recipie, it can be empty
         self.ingredients = ingredients
+
+        self.instructions = instructions
 
     @property
     def name(self):
@@ -117,6 +120,25 @@ class Recipie:
 
     def ingredient_quantity_needed(self, ingredient):
         return self.ingredients[ingredient]
+
+    def get_instructions(self):
+        """return the list of instructions if they were set"""
+        if len(self.instructions > 0):
+            return self.instructions
+        else:
+            return "no instructions available"
+
+    def add_instructions(self, instruction_list):
+        """add a list of instructions"""
+        self.instructions = instruction_list
+
+    def insert_instruction(self, index, instruction):
+        """add an instruction to existing set of instructions"""
+        self.instructions.insert(index, instruction)
+
+    def delete_instruction(self, index):
+        """remove an instruction from list"""
+        self.instructions.pop(index)
 
 
 class Kitchen:
