@@ -1,5 +1,5 @@
-from src.kitchen import Food, Recipie, Kitchen
-from src.data_operations import Data
+from kitchen import Food, Recipie, Kitchen
+from data_operations import Data
 import json
 
 class TestData:
