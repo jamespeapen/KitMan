@@ -99,7 +99,11 @@ class Menu:
                 self.data_window.addstr(y, x, recipie.name.capitalize())
                 self.data_window.attroff(curses.color_pair(1))
                 for ingredient in recipie.ingredients:
-                    self.preview_window.addstr(ingredient.capitalize() + '\t' + str(recipie.ingredients[ingredient]) + '\n\n')
+                    self.preview_window.addstr(ingredient.capitalize() + '\t'
+                                               + str(recipie.ingredients[ingredient]) + ' '
+                                               + self.kitchen.pantry[ingredient].unit + '\n\n')
+                for instruction in recipie.instructions:
+                    self.preview_window.addstr(instruction.capitalize() + '\n\n')
 
             else:
                 self.data_window.addstr(y, x, recipie.name.capitalize())
@@ -123,20 +127,24 @@ class Menu:
 
         curses.curs_set(0)
 
+        menu_mode = 1
         current_row = 0
 
         self.menu(self.stdscr, current_row)
+        self.pantry(stdscr, current_row)
 
         while True:
             key = self.stdscr.getch()
 
             # main menu selection
-            if key == ord('1'):
+            if key == ord('1') or key == ord('h') and menu_mode == 2:
                 current_row = 0
                 self.pantry(stdscr, current_row)
                 menu_mode = 1
 
-            elif key == ord('2'):
+            elif key == ord('2') \
+                or key == ord('l') and menu_mode == 1 \
+                or key == ord('h') and menu_mode == 3:
                 current_row = 0
                 self.recipies(stdscr, current_row)
                 menu_mode = 2
