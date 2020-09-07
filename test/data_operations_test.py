@@ -90,12 +90,41 @@ class TestData:
         assert test_recipie2.ingredients['ingredient21'] == 21
         assert test_recipie2.ingredients['ingredient22'] == 22
 
+        assert isinstance(test_recipie1.instructions, list)
+        assert test_recipie1.instructions[0] == "instruction_11"
+        assert test_recipie1.instructions[1] == "instruction_12"
+        assert test_recipie1.instructions[2] == "instruction_13"
+        assert test_recipie1.instructions[3] == "instruction_14"
+
+        assert isinstance(test_recipie2.instructions, list)
+        assert test_recipie2.instructions[0] == "instruction_21"
+        assert test_recipie2.instructions[1] == "instruction_22"
+        assert test_recipie2.instructions[2] == "instruction_23"
+        assert test_recipie2.instructions[3] == "instruction_24"
+
     def test_write_recipies(self):
         data = Data()
 
-        recipie1 = Recipie('recipie01', 10, dict())
-        recipie2 = Recipie('recipie02', 20, {'ingredient21': 21, 'ingredient22': 22})
+        instruction_1 = "instruction_11"
+        instruction_2 = "instruction_12"
+        instruction_3 = "instruction_13"
+        instruction_4 = "instruction_14"
+
+        instruction_list1 = [instruction_1, instruction_2, instruction_3, instruction_4]
+
+        recipie1 = Recipie('recipie01', 10, dict(), instruction_list1)
+
+        instruction_1 = "instruction_21"
+        instruction_2 = "instruction_22"
+        instruction_3 = "instruction_23"
+        instruction_4 = "instruction_24"
+
+        instruction_list2 = [instruction_1, instruction_2, instruction_3, instruction_4]
+
+        recipie2 = Recipie('recipie02', 20, {'ingredient21': 21, 'ingredient22': 22}, instruction_list2)
+
         recipie3 = Recipie('recipie03', 30, {'ingredient31': 31, 'ingredient32': 32, 'ingredient33': 33})
+
         recipies = [recipie1, recipie2, recipie3]
 
         data.write_recipies(recipies, 'test/test_write_recipies.json')
@@ -127,13 +156,25 @@ class TestData:
             assert json_data[2]['ingredients']['ingredient32'] == 32
             assert json_data[2]['ingredients']['ingredient33'] == 33
 
+            assert json_data[0]["instructions"][0] == "instruction_11"
+            assert json_data[0]["instructions"][1] == "instruction_12"
+            assert json_data[0]["instructions"][2] == "instruction_13"
+            assert json_data[0]["instructions"][3] == "instruction_14"
+
+            assert json_data[1]["instructions"][0] == "instruction_21"
+            assert json_data[1]["instructions"][1] == "instruction_22"
+            assert json_data[1]["instructions"][2] == "instruction_23"
+            assert json_data[1]["instructions"][3] == "instruction_24"
+
+            assert len(json_data[2]["instructions"]) == 0
+
         file.close()
 
         # clear file after test
-        with open('test/test_write_recipies.json', 'w') as file:
-              file.write('')
-        file.close()
-
+#        with open('test/test_write_recipies.json', 'w') as file:
+#              file.write('')
+#        file.close()
+#
     def test_write_shopping_list(sefl):
 
         kitchen1 = Kitchen()
