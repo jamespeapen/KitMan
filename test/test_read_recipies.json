@@ -6,7 +6,13 @@
             {
                 "ingredient11": 11,
                 "ingredient12": 12
-            }
+            },
+        "instructions": [
+            "instruction_11",
+            "instruction_12",
+            "instruction_13",
+            "instruction_14"
+        ]
     },
     {
         "name": "test_recipie2",
@@ -15,6 +21,12 @@
             {
                 "ingredient21": 21,
                 "ingredient22": 22
-            }
+            },
+        "instructions": [
+            "instruction_21",
+            "instruction_22",
+            "instruction_23",
+            "instruction_24"
+        ]
     }
 ]
