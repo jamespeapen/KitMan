@@ -65,6 +65,21 @@ class TestKitchen:
         except RuntimeError:
             pass
 
+        instruction_1 = "instruction_1"
+        instruction_2 = "instruction_2"
+        instruction_3 = "instruction_3"
+        instruction_4 = "instruction_4"
+
+        instruction_list = [instruction_1, instruction_2, instruction_3, instruction_4]
+        recipie1.add_instructions(instruction_list)
+        assert recipie1.instructions[0] == "instruction_1"
+        assert recipie1.instructions[1] == "instruction_2"
+        assert recipie1.instructions[2] == "instruction_3"
+        assert recipie1.instructions[3] == "instruction_4"
+
+        recipie1.insert_instruction(2, "instruction_1.5")
+        assert recipie1.instructions[2] == "instruction_1.5"
+
     def test_kitchen(self):
 
         # test init and independent parts
