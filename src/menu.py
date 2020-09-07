@@ -41,9 +41,9 @@ class Menu:
     def menu(self, stdscr, current_row):
         """Main menu bar"""
 
-        menu_bar = ["1: Pantry",
-                    "2: Recipies",
-                    "3: Shopping"]
+        menu_bar = ["1: Pantry ",
+                    "2: Recipies ",
+                    "3: Shopping "]
 
         y = 0
         x = 1
