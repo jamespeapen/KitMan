@@ -5,7 +5,7 @@ Created 26 June 2020
 Author: James Eapen
 '''
 
-from src.kitchen import Food, Recipie
+from kitchen import Food, Recipie
 import json
 
 
