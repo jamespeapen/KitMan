@@ -26,13 +26,17 @@ class Menu:
 
         # windows
         self.menubar = curses.newwin(2, self.width, 0, 0)
+        self.menubar.addstr("Kitman")
+        self.menubar.refresh()
 
-        self.data_window = curses.newwin(self.height - 3,
+        self.data_window = curses.newwin(self.height - 5,
                                          (self.width // 2), 3, 0)
 
-        self.preview_window = curses.newwin(self.height - 3,
+        self.preview_window = curses.newwin(self.height - 5,
                                             self.width // 2, 3,
                                             (self.width // 2))
+
+        self.option_window = curses.newwin(2, self.width, self.height-2, 0)
 
         # colors
         curses.start_color()
@@ -101,7 +105,7 @@ class Menu:
         self.data_window.addstr(0, 0, "Recipies")
         self.preview_window.addstr(0, 0, "Ingredient\tQuantity\n\n")
         y = 2
-        x = 0
+        x = 1
 
         for idx, recipie in enumerate(self.kitchen.recipies):
             if idx == current_row:
@@ -123,6 +127,23 @@ class Menu:
         self.data_window.refresh()
         self.preview_window.refresh()
 
+    def options(self, stdscr, current_row, menu_mode):
+        """Options for additions, removals, modifications etc."""
+
+        self.option_window.clear()
+
+        pantry_options = ["a: Add to stock", "r: Remove from stock", "c: Change stock", "m: Modify food"]
+        recipie_options = ["a: Add", "r: Remove", "m: Modify"]
+
+        if menu_mode == 1:
+            for element in pantry_options:
+                self.option_window.addstr(element + "\t")
+        elif menu_mode == 2:
+            for element in recipie_options:
+                self.option_window.addstr(element + "\t")
+
+        self.option_window.refresh()
+
     def refresh_data_window(self, stdscr, current_row, menu_mode):
         """Check what menu item method was selected with scroll event
         and call that method"""
@@ -131,6 +152,9 @@ class Menu:
             self.pantry(stdscr, current_row)
         elif menu_mode == 2:
             self.recipies(stdscr, current_row)
+
+        self.menu(stdscr, current_row, menu_mode)
+        self.options(stdscr, current_row, menu_mode)
 
     def main(self, stdscr):
         """Main event loop and scroll control"""
@@ -141,6 +165,7 @@ class Menu:
         current_row = 0
 
         self.menu(self.stdscr, current_row, 1)
+        self.options(stdscr, current_row, 1)
         self.pantry(stdscr, current_row)
 
         while True:
@@ -150,16 +175,14 @@ class Menu:
             if key == ord('1') or key == ord('h') and menu_mode == 2:
                 current_row = 0
                 menu_mode = 1
-                self.pantry(stdscr, current_row)
-                self.menu(stdscr, current_row, menu_mode)
+                self.refresh_data_window(stdscr, current_row, menu_mode)
 
             elif key == ord('2') \
                 or key == ord('l') and menu_mode == 1 \
                 or key == ord('h') and menu_mode == 3:
                 menu_mode = 2
                 current_row = 0
-                self.recipies(stdscr, current_row)
-                self.menu(stdscr, current_row, menu_mode)
+                self.refresh_data_window(stdscr, current_row, menu_mode)
 
             elif key == ord("q"):
                 break
