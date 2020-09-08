@@ -67,7 +67,10 @@ class Menu:
         x = 0
 
         for idx, food in enumerate(self.kitchen.pantry):
+
             food_obj = self.kitchen.pantry[food]
+
+            # highlight current row
             if idx == current_row:
                 self.data_window.attron(curses.color_pair(1))
                 self.data_window.addstr(y, x, food.capitalize() + '\t' + str(food_obj.quantity_in_stock) + ' ' + food_obj.unit)
@@ -114,7 +117,7 @@ class Menu:
         self.preview_window.refresh()
 
     def refresh_data_window(self, stdscr, current_row, menu_mode):
-        """Check what menu item method was selected before scroll event
+        """Check what menu item method was selected with scroll event
         and call that method"""
 
         if menu_mode == 1:
