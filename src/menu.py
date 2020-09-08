@@ -38,7 +38,7 @@ class Menu:
         curses.start_color()
         curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
 
-    def menu(self, stdscr, current_row):
+    def menu(self, stdscr, current_row, menu_mode):
         """Main menu bar"""
 
         menu_bar = ["1: Pantry ",
@@ -50,7 +50,14 @@ class Menu:
 
         for idx, element in enumerate(menu_bar):
 
-            self.menubar.addstr(y, x, element)
+            if idx == menu_mode - 1:
+                self.menubar.attron(curses.color_pair(1))
+                self.menubar.addstr(y, x, element)
+                self.menubar.attroff(curses.color_pair(1))
+            else:
+                self.menubar.addstr(y, x, element)
+
+            # word spacing
             x += len(element) + len(menu_bar) // (len(menu_bar) - 1)
 
         self.menubar.refresh()
@@ -133,7 +140,7 @@ class Menu:
         menu_mode = 1
         current_row = 0
 
-        self.menu(self.stdscr, current_row)
+        self.menu(self.stdscr, current_row, 1)
         self.pantry(stdscr, current_row)
 
         while True:
@@ -142,15 +149,17 @@ class Menu:
             # main menu selection
             if key == ord('1') or key == ord('h') and menu_mode == 2:
                 current_row = 0
-                self.pantry(stdscr, current_row)
                 menu_mode = 1
+                self.pantry(stdscr, current_row)
+                self.menu(stdscr, current_row, menu_mode)
 
             elif key == ord('2') \
                 or key == ord('l') and menu_mode == 1 \
                 or key == ord('h') and menu_mode == 3:
+                menu_mode = 2
                 current_row = 0
                 self.recipies(stdscr, current_row)
-                menu_mode = 2
+                self.menu(stdscr, current_row, menu_mode)
 
             elif key == ord("q"):
                 break
@@ -167,7 +176,7 @@ class Menu:
                 and current_row < len(self.kitchen.pantry) - 1:
                     current_row += 1
 
-                if menu_mode == 2 \
+                elif menu_mode == 2 \
                 and current_row < len(self.kitchen.recipies) - 1:
                     current_row += 1
 
